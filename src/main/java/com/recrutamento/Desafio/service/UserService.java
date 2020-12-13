@@ -24,6 +24,11 @@ public class UserService {
 	public List<User> findAll(){
 		return userRepository.findAll();
 	}
+	
+	public User findById(String id){
+		Optional<User> oUser = userRepository.findById(id);
+		return oUser.orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
+	}
 
 	public void saveUser(UserDTO userDTO) {
 		List<String> messagens = new ArrayList<>();

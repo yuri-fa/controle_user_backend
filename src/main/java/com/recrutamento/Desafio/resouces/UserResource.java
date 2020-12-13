@@ -1,7 +1,8 @@
 package com.recrutamento.Desafio.resouces;
 
-import java.security.Principal;
 import java.util.List;
+
+import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +28,14 @@ public class UserResource {
 
 	@GetMapping("/users")
 	public ResponseEntity<List<User>> findAll(){
-		return ResponseEntity.ok().body(userService.findAll());
+		List<User> userList = userService.findAll();
+		return ResponseEntity.ok().body(userList);
+	}
+	
+	@GetMapping("/users/{id}")
+	public ResponseEntity<User> findById(@PathVariable String id){
+		User user = userService.findById(id);
+		return ResponseEntity.ok().body(user);
 	}
 	
 	@PostMapping("/users")
@@ -45,6 +53,7 @@ public class UserResource {
 	@PutMapping("/users/{id}")
 	public ResponseEntity<User> updateUser(@PathVariable String id,@RequestBody UserDTO userDTO){
 		User user = userService.fromDTO(userDTO);
+		user.setId(id);
 		return ResponseEntity.ok().body(userService.updateUser(id,user));
 	}
 }
